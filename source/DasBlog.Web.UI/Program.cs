@@ -25,6 +25,7 @@ namespace DasBlog.Web.UI
 		// asp.net core mvc testing insists that a CreateWebHostBuild named method exists
 		public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
 			WebHost.CreateDefaultBuilder(args)
+                .UseApplicationInsights()
 				.ConfigureAppConfiguration((hostingContext, configBuilder) =>
 				{
 					env = hostingContext.HostingEnvironment;

@@ -11,6 +11,8 @@
     <Product>DasBlog Core</Product>
     <Configurations>Debug;Release;posix</Configurations>
     <Platforms>AnyCPU</Platforms>
+    <ApplicationInsightsResourceId>/subscriptions/400d8be0-b9fe-4e86-a733-74e1938f890a/resourcegroups/MAD-TESTRESOURCEGROUP/providers/microsoft.insights/components/DasBlog.Web-MAD</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/400d8be0-b9fe-4e86-a733-74e1938f890a/resourcegroups/MAD-TESTRESOURCEGROUP/providers/microsoft.insights/components/DasBlog.Web-MAD</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Themes\dasblog\site.min.css" />
@@ -27,6 +29,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.2.2" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.5.1" />
     <!--<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.2.0" />-->
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" />
@@ -125,6 +128,9 @@
   <ItemGroup>
     <Folder Include="content\binary\" />
     <Folder Include="Properties" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
   <!--
   <ItemGroup>
