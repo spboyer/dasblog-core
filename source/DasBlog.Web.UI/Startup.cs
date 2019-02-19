@@ -29,6 +29,10 @@ using DasBlog.Web.TagHelpers.RichEdit;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Hosting;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+using Microsoft.ApplicationInsights.SnapshotCollector;
+using Microsoft.Extensions.Options;
+using Microsoft.ApplicationInsights.AspNetCore;
+using Microsoft.ApplicationInsights.Extensibility;
 
 namespace DasBlog.Web
 {
@@ -52,6 +56,12 @@ namespace DasBlog.Web
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			// Configure SnapshotCollector from application settings
+			services.Configure<SnapshotCollectorConfiguration>(Configuration.GetSection(nameof(SnapshotCollectorConfiguration)));
+
+			// Add SnapshotCollector telemetry processor.
+			services.AddSingleton<ITelemetryProcessorFactory>(sp => new SnapshotCollectorTelemetryProcessorFactory(sp));
+
 			services.AddOptions();
 			services.AddMemoryCache();
 
@@ -296,6 +306,20 @@ namespace DasBlog.Web
 			}
 
 			return richEditBuilder;
+		}
+
+		private class SnapshotCollectorTelemetryProcessorFactory : ITelemetryProcessorFactory
+		{
+			private readonly IServiceProvider _serviceProvider;
+
+			public SnapshotCollectorTelemetryProcessorFactory(IServiceProvider serviceProvider) =>
+				_serviceProvider = serviceProvider;
+
+			public ITelemetryProcessor Create(ITelemetryProcessor next)
+			{
+				var snapshotConfigurationOptions = _serviceProvider.GetService<IOptions<SnapshotCollectorConfiguration>>();
+				return new SnapshotCollectorTelemetryProcessor(next, configuration: snapshotConfigurationOptions.Value);
+			}
 		}
 
 		public class RouteOptions
