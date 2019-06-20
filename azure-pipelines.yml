@@ -36,4 +36,4 @@ steps:
   inputs:
     command: build
     projects: '**/*.sln'
-    arguments: '--configuration Release'
+    arguments: '--configuration Release' 
