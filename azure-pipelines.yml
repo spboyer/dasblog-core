@@ -2,10 +2,13 @@
 strategy:
   matrix:
     linux:
+      displayName: 'Linux Build'
       imageName: 'ubuntu-16.04'
     mac:
+      displayName: 'MacOS Build'
       imageName: 'macos-10.13'
     windows:
+      displayName: 'Windows Build'      
       imageName: 'windows-2019'
 
 pool:
@@ -25,9 +28,6 @@ steps:
   inputs:
     packageType: 'sdk'
     version: '2.1.500'
-
-#- script: dotnet build 'source/DasBlog All.sln' -c $(buildConfiguration)
-#  displayName: Build DasBlog Solution
 
 - task: DotNetCoreCLI@2
   inputs:
