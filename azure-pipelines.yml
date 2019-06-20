@@ -13,7 +13,7 @@ steps:
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
-    version: '2.1.1'
-    
+    version: '2.1'
+
 - script: dotnet build 'source/DasBlog All.sln' --configuration $(buildConfiguration)
   displayName: Build DasBlog Solution
