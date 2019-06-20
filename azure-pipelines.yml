@@ -1,10 +1,15 @@
-# ASP.NET Core
-# Build and test ASP.NET Core web applications targeting .NET Core.
-# Add steps that run tests, create a NuGet package, deploy, and more:
-# https://docs.microsoft.com/vsts/pipelines/languages/dotnet-core
+# Build on multiple platforms - https://docs.microsoft.com/azure/devops/pipelines/get-started-multiplatform?view=azure-devops&WT.mc_id=devops-github-shboyer
+strategy:
+  matrix:
+    linux:
+      imageName: 'ubuntu-16.04'
+    mac:
+      imageName: 'macos-10.13'
+    windows:
+      imageName: 'windows-2019'
 
 pool:
-  vmImage: 'windows-2019'
+  vmImage: $(imageName)
 
 variables:
   buildConfiguration: 'Release'
