@@ -10,12 +10,5 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-#- script: dotnet build --configuration $(buildConfiguration)
-#  displayName: 'dotnet build $(buildConfiguration)'
-
-- task: DotNetCoreCLI@2
+- script: dotnet build 'source/DasBlog All.sln' --configuration $(buildConfiguration)
   displayName: Build DasBlog Solution
-  inputs:
-    command: 'build'
-    arguments: '--configuration $(buildConfiguration)'
-    workingDirectory: 'source'
