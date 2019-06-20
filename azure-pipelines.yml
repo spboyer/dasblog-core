@@ -2,13 +2,10 @@
 strategy:
   matrix:
     linux:
-      displayName: 'Linux Build'
       imageName: 'ubuntu-16.04'
     mac:
-      displayName: 'MacOS Build'
       imageName: 'macos-10.13'
     windows:
-      displayName: 'Windows Build'      
       imageName: 'windows-2019'
 
 pool:
