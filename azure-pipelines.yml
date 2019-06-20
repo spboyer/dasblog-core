@@ -32,11 +32,11 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: restore
-    projects: '**/*.csproj'
+    projects: '**/*.sln'
 
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
     command: build
-    projects: '**/*.csproj'
+    projects: '**/*.sln'
     arguments: '--configuration Release'
