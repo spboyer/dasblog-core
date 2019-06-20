@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/vsts/pipelines/languages/dotnet-core
 
 pool:
-  vmImage: 'windows-2019'
+  vmImage: 'ubuntu-16.04'
 
 variables:
   buildConfiguration: 'Release'
@@ -20,5 +20,17 @@ steps:
     packageType: 'sdk'
     version: '2.1.500'
 
-- script: dotnet build 'source/DasBlog All.sln' -c $(buildConfiguration)
-  displayName: Build DasBlog Solution
+#- script: dotnet build 'source/DasBlog All.sln' -c $(buildConfiguration)
+#  displayName: Build DasBlog Solution
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: restore
+    projects: '**/*.csproj'
+
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    command: build
+    projects: '**/*.csproj'
+    arguments: '--configuration Release'
