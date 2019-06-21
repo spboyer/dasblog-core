@@ -21,15 +21,15 @@ steps:
     packageType: 'sdk'
     version: '2.2.100'
 
-#- task: UseDotNet@2
- # inputs:
- #   packageType: 'sdk'
- #   version: '2.1.500'
-
-- task: DotNetCoreCLI@2
+- task: UseDotNet@2
   inputs:
-    command: restore
-    projects: '**/*.sln'
+    packageType: 'sdk'
+    version: '2.1.700'
+
+#- task: DotNetCoreCLI@2
+#  inputs:
+#    command: restore
+#    projects: '**/*.sln'
 
 #- task: DotNetCoreCLI@2
 #  displayName: Build
