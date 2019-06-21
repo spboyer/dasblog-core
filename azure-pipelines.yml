@@ -38,7 +38,7 @@ steps:
     projects: '**/*.sln'
     arguments: '--configuration Release' 
 
-- script: dotnet test source/DasBlog.Tests/FunctionalTests/ --logger trx --filter Category!=TestInfrastructureTest
+- script: dotnet test source/DasBlog.Tests/FunctionalTests/ --logger trx;LogfileName=test_results.xml --results-directory $(System.DefaultWorkingDirectory)/test_results --filter Category!=TestInfrastructureTest
   displayName: Run Functional Tests
   condition: and(succeeded(), eq(variables['imageName'], 'windows-2019'))
 
@@ -47,4 +47,5 @@ steps:
   condition: and(succeeded(), eq(variables['imageName'], 'windows-2019'))
   inputs:
     testRunner: VSTest
-    testResultsFiles: '**/*.trx'
+    testResultsFiles: '**/*.xml'
+    searchFolder: '$(System.DefaultWorkingDirectory)/test_results'
