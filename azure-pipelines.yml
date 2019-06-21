@@ -21,10 +21,10 @@ steps:
     packageType: 'sdk'
     version: '2.2.100'
 
-- task: UseDotNet@2
-  inputs:
-    packageType: 'sdk'
-    version: '2.1.500'
+#- task: UseDotNet@2
+ # inputs:
+ #   packageType: 'sdk'
+ #   version: '2.1.500'
 
 - task: DotNetCoreCLI@2
   inputs:
