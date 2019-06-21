@@ -38,7 +38,7 @@ steps:
     projects: '**/*.sln'
     arguments: '--configuration Release' 
 
-- script: dotnet test **/DasBlog.Tests/FunctionalTests/*.csproj --logger trx --filter Category!=TestInfrastructureTest
+- script: dotnet test source/DasBlog.Tests/FunctionalTests/ --logger trx --filter Category!=TestInfrastructureTest
   displayName: Run Functional Tests
   condition: and(succeeded(), eq(variables['imageName'], 'windows-2019'))
 
