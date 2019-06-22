@@ -54,7 +54,7 @@ namespace DasBlog.Tests.FunctionalTests.BrowserBasedTests
     {
       services.Configure<BrowserOptions>(options =>
       {
-        options.HomeUrl = "http://localhost:50431/";
+        options.HomeUrl = "http://localhost:5000/";
         options.Driver = "firefox";
       });
       services.AddSingleton<IWebServerRunner, WebServerRunner>();
