@@ -38,7 +38,7 @@ steps:
   inputs:
     command: build
     projects: '**/*.sln'
-    arguments: '--configuration Release' 
+    arguments: '--no-restore --configuration Release' 
 
 - script: dotnet test source/DasBlog.Tests/FunctionalTests/ --logger trx;LogfileName=test_results.xml --results-directory $(System.DefaultWorkingDirectory)/test_results --filter Category!=TestInfrastructureTest
   displayName: Run Functional Tests
