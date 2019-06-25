@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using DasBlog.Tests.Automation.Dom;
 using DasBlog.Tests.Automation.Selenium;
