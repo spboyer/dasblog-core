@@ -41,7 +41,7 @@ steps:
 
 - task: PublishTestResults@2
   displayName: Publish Test Results
-  condition: and(succeeded(), eq(variables['imageName'], 'windows-2019'))
+  condition: and(always(), eq(variables['imageName'], 'windows-2019'))
   inputs:
     testRunner: VSTest
     testResultsFiles: '**/*.xml'
