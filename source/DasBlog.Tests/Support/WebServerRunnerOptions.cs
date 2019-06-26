@@ -8,7 +8,7 @@ namespace DasBlog.Tests.Support
 
 		public string WorkingDirectory { get; set; }
 		  = Path.Combine(Path.GetDirectoryName(typeof(WebServerRunnerOptions).Assembly.Location)
-		  , "../../../../../DasBlog.Web.UI");
-		public string WebServerProgramArguments { get; set; } = @"bin/debug/netcoreapp2.1/DasBlog.Web.dll";
+		  , @"..\..\..\..\..\DasBlog.Web.UI");
+		public string WebServerProgramArguments { get; set; } = @"bin\debug\netcoreapp2.1\DasBlog.Web.dll";
 	}
 }
