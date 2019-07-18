@@ -23,7 +23,7 @@ namespace DasBlog.Tests.FunctionalTests.BrowserBasedTests
 			// I want to get hold of the xunit test results when running from the command line.
 			// "dotnet test" isn't providing them as far as I can see from my limited investigations
 			// Even after specifying RuntimeFramework as 2.1.4 in the csproj I got
-			// "dotnet xunit" should be more fruitful but fails with the following issue:
+			// "dotnet xunit" should be more fruitful but faigit pls with the following issue:
 			//   Could not load file or assembly 'Microsoft.Extensions.Options, Version=2.1.0.0,
 			// There is a nuget package for M.E.O 2.1.1 but the install fails and is rolled back
 			// There are no other v2 nuget packages except a preview 2.2.

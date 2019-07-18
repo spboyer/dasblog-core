@@ -22,10 +22,10 @@ namespace DasBlog.Web.TagHelpers
 		{
 			output.TagName = "a";
 			output.TagMode = TagMode.StartTagAndEndTag;
-			output.Attributes.SetAttribute("href", dasBlogSettings.GetCommentViewUrl(Post.EntryId));
+			output.Attributes.SetAttribute("href", dasBlogSettings.GetCommentViewUrl(Post.PermaLink));
 			output.Attributes.SetAttribute("id", Constants.CommentOnThisPostId);
 			output.Attributes.SetAttribute("class", "dbc-comment-on-post-link");
-			output.Content.SetHtmlContent("Comment on this post");
+			output.Content.SetHtmlContent($"Comment on this post [{((Post.Comments != null) ? Post.Comments.Comments.Count : 0)}]");
 		}
 
 		public override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)

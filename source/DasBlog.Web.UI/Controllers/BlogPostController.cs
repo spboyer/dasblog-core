@@ -53,8 +53,8 @@ namespace DasBlog.Web.Controllers
 		public IActionResult Post(string posttitle, string day, string month, string year)
 		{
 			var lpvm = new ListPostsViewModel();
-			DateTime postDtTime = DateTime.MinValue;
-			int dayYear = 0;
+			var postDtTime = DateTime.MinValue;
+			var dayYear = 0;
 
 			if (dasBlogSettings.SiteConfiguration.EnableTitlePermaLinkUnique)
 			{
@@ -72,10 +72,21 @@ namespace DasBlog.Web.Controllers
 			
 			if (routeAffectedFunctions.IsSpecificPostRequested(posttitle, dayYear))
 			{
-				var entry = blogManager.GetBlogPost(posttitle.Replace(dasBlogSettings.SiteConfiguration.TitlePermalinkSpaceReplacement, string.Empty), dt);
+				var entry = blogManager.GetBlogPost(posttitle, dt);
 				if (entry != null)
 				{
 					var pvm = mapper.Map<PostViewModel>(entry);
+
+					var lcvm = new ListCommentsViewModel
+					{
+						Comments = blogManager.GetComments(entry.EntryId, false)
+										.Select(comment => mapper.Map<CommentViewModel>(comment)).ToList(),
+						PostId = entry.EntryId,
+						PostDate = entry.CreatedUtc,
+						CommentUrl = dasBlogSettings.GetCommentViewUrl(posttitle),
+						ShowComments = dasBlogSettings.SiteConfiguration.ShowCommentsWhenViewingEntry
+					};
+					pvm.Comments = lcvm;
 
 					if (httpContextAccessor.HttpContext.Request.Path.Value.EndsWith(".aspx", StringComparison.OrdinalIgnoreCase))
 					{
@@ -101,7 +112,7 @@ namespace DasBlog.Web.Controllers
 		public IActionResult PostGuid(Guid postid)
 		{
 			var lpvm = new ListPostsViewModel();
-			var entry = blogManager.GetBlogPost(postid);
+			var entry = blogManager.GetBlogPostByGuid(postid);
 			if (entry != null)
 			{
 				lpvm.Posts = new List<PostViewModel>() { mapper.Map<PostViewModel>(entry) };
@@ -276,13 +287,24 @@ namespace DasBlog.Web.Controllers
 		}
 
 		[AllowAnonymous]
-		[HttpGet("post/{postid:guid}/comments")]
-		[HttpGet("post/{postid:guid}/comments/{commentid:guid}")]
-		public IActionResult Comment(Guid postid)
+		[HttpGet("{posttitle}/comments")]
+		[HttpGet("{posttitle}/comments/{commentid:guid}")]
+		public IActionResult Comment(string posttitle)
 		{
 			ListPostsViewModel lpvm = null;
+			Entry entry = null;
+			var postguid = Guid.Empty;
 
-			var entry = blogManager.GetBlogPost(postid);
+			entry = blogManager.GetBlogPost(posttitle, null);
+
+			if (entry == null && Guid.TryParse(posttitle, out postguid))
+			{
+				entry = blogManager.GetBlogPostByGuid(postguid);
+
+				var pvm = mapper.Map<PostViewModel>(entry);
+
+				return RedirectPermanent(dasBlogSettings.GetCommentViewUrl(pvm.PermaLink));
+			}
 
 			if (entry != null)
 			{
@@ -295,10 +317,12 @@ namespace DasBlog.Web.Controllers
 				{
 					var lcvm = new ListCommentsViewModel
 					{
-						Comments = blogManager.GetComments(postid.ToString(), false)
+						Comments = blogManager.GetComments(entry.EntryId, false)
 							.Select(comment => mapper.Map<CommentViewModel>(comment)).ToList(),
-						PostId = postid.ToString(),
-						PostDate = entry.CreatedUtc
+						PostId = entry.EntryId,
+						PostDate = entry.CreatedUtc,
+						CommentUrl = dasBlogSettings.GetCommentViewUrl(posttitle),
+						ShowComments = true
 					};
 
 					lpvm.Posts.First().Comments = lcvm;
@@ -319,7 +343,7 @@ namespace DasBlog.Web.Controllers
 
 			if (!ModelState.IsValid)
 			{
-				return Comment(new Guid(addcomment.TargetEntryId));
+				return Comment(addcomment.TargetEntryId);
 			}
 
 			addcomment.Content = dasBlogSettings.FilterHtml(addcomment.Content);
@@ -359,7 +383,7 @@ namespace DasBlog.Web.Controllers
 
 			BreakSiteCache();
 
-			return Comment(new Guid(addcomment.TargetEntryId));
+			return Comment(addcomment.TargetEntryId);
 		}
 
 		[HttpDelete("post/{postid:guid}/comments/{commentid:guid}")]
